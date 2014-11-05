@@ -94,6 +94,10 @@ lowlevel_init:
 	/* init system clock */
 	bl system_clock_init
 
+	/* LED test2 */
+	ldr	r0, =ELFIN_GPIO_BASE
+	ldr	r1, =0x002b
+	str	r1, [r0, #GPMDAT_OFFSET]
 #ifndef CONFIG_NAND_SPL
 	/* for UART */
 	bl uart_asm_init
@@ -112,6 +116,10 @@ lowlevel_init:
 	str	r1, [r0]
 
 	bl	mem_ctrl_asm_init
+	/* LED test3 */
+	ldr	r0, =ELFIN_GPIO_BASE
+	ldr	r1, =0x002d
+	str	r1, [r0, #GPMDAT_OFFSET]
 
 /* Wakeup support. Don't know if it's going to be used, untested. */
 	ldr	r0, =(ELFIN_CLOCK_POWER_BASE + RST_STAT_OFFSET)
@@ -119,6 +127,11 @@ lowlevel_init:
 	bic	r1, r1, #0xfffffff7
 	cmp	r1, #0x8
 	beq	wakeup_reset
+	
+	/* LED test4 */
+	ldr	r0, =ELFIN_GPIO_BASE
+	ldr	r1, =0x002e
+	str	r1, [r0, #GPMDAT_OFFSET]
 
 1:
 	mov	lr, r12
@@ -131,10 +144,10 @@ wakeup_reset:
 	ldr	r1, [r0]
 	str	r1, [r0]
 
-	/* LED test */
+	/* LED test4 */
 	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x3000
-	str	r1, [r0, #GPNDAT_OFFSET]
+	ldr	r1, =0x002e
+	str	r1, [r0, #GPMDAT_OFFSET]
 
 	/* Load return address and jump to kernel */
 	ldr	r0, =(ELFIN_CLOCK_POWER_BASE + INF_REG0_OFFSET)
@@ -222,7 +235,7 @@ wait_for_async:
 	str	r1, [r0, #MPLL_CON_OFFSET]
 
 	/* FOUT of EPLL is 96MHz */
-	ldr	r1, =0x200203
+	ldr	r1, =0x80200203		/* ~~~~ modify by guanc ~~~~ */
 	str	r1, [r0, #EPLL_CON0_OFFSET]
 	ldr	r1, =0x0
 	str	r1, [r0, #EPLL_CON1_OFFSET]

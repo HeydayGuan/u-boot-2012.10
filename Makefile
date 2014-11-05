@@ -414,6 +414,7 @@ $(obj)u-boot.srec:	$(obj)u-boot
 $(obj)u-boot.bin:	$(obj)u-boot
 		$(OBJCOPY) ${OBJCFLAGS} -O binary $< $@
 		$(BOARD_SIZE_CHECK)
+		rm ~/image/u-boot.bin && cp $@ ~/image/
 
 $(obj)u-boot.ldr:	$(obj)u-boot
 		$(CREATE_LDR_ENV)
