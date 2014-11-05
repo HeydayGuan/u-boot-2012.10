@@ -53,14 +53,14 @@ lowlevel_init:
 
 	/* LED on only #8 */
 	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x55540000
-	str	r1, [r0, #GPNCON_OFFSET]
+	ldr	r1, =0x00111111				/* ~~~~ modify by guanc ~~~~ */
+	str	r1, [r0, #GPMCON_OFFSET]	/* ~~~~ modify by guanc ~~~~ */
 
-	ldr	r1, =0x55555555
-	str	r1, [r0, #GPNPUD_OFFSET]
+	ldr	r1, =0x00000555				/* ~~~~ modify by guanc ~~~~ */	
+	str	r1, [r0, #GPMPUD_OFFSET]	/* ~~~~ modify by guanc ~~~~ */
 
-	ldr	r1, =0xf000
-	str	r1, [r0, #GPNDAT_OFFSET]
+	ldr	r1, =0x0027					/* ~~~~ modify by guanc ~~~~ */
+	str	r1, [r0, #GPMDAT_OFFSET]	/* ~~~~ modify by guanc ~~~~ */
 
 	/* Disable Watchdog */
 	ldr	r0, =0x7e000000		@0x7e004000
@@ -184,7 +184,7 @@ check_syncack:
 	 * This was unconditional in original Samsung sources, but it doesn't
 	 * seem to make much sense on S3C6410.
 	 */
-#ifndef CONFIG_S3C6410
+//#ifndef CONFIG_S3C6410		/* ~~~~ modify by guanc ~~~~ */
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	bic	r1, r1, #0xC0
 	orr	r1, r1, #0x40
@@ -195,7 +195,7 @@ wait_for_async:
 	and	r1, r1, #0xf00
 	cmp	r1, #0x0
 	bne	wait_for_async
-#endif
+//#endif						/* ~~~~ modify by guanc ~~~~ */
 
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	bic	r1, r1, #0x40
@@ -309,15 +309,15 @@ mmu_table:
 	.word 0x00000000
 	.endr
 
-	/* 128MB for SDRAM 0xC0000000 -> 0x50000000 */
+	/* 256MB for SDRAM 0xC0000000 -> 0x50000000 */
 	.set __base, 0x500
-	.rept 0xC80 - 0xC00
+	.rept 0xD00 - 0xC00		//.rept 0xC80 - 0xC00	/* ~~~~ modify by guanc ~~~~ */
 	FL_SECTION_ENTRY __base, 3, 0, 1, 1
 	.set __base, __base + 1
 	.endr
 
 	/* access is not allowed. */
-	.rept 0x1000 - 0xc80
+	.rept 0x1000 - 0xD00	//.rept 0x1000 - 0xc80  /* ~~~~ modify by guanc ~~~~ */
 	.word 0x00000000
 	.endr
 #endif

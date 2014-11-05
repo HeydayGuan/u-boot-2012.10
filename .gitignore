@@ -77,3 +77,17 @@ cscope.*
 
 # spl ais files
 /spl/*.ais
+
+# ~~~~ add by guanc ~~~~
+# soft link files and the generated files 
+/nand_spl/board/samsung/smdk6410/cpu_init.S
+/nand_spl/board/samsung/smdk6410/lowlevel_init.S
+/nand_spl/board/samsung/smdk6410/nand_base.c
+/nand_spl/board/samsung/smdk6410/nand_boot.c
+/nand_spl/board/samsung/smdk6410/nand_ecc.c
+/nand_spl/board/samsung/smdk6410/s3c64xx.c
+/nand_spl/board/samsung/smdk6410/smdk6410_nand_spl.c
+/nand_spl/board/samsung/smdk6410/start.S
+/nand_spl/u-boot-spl
+/nand_spl/u-boot-spl.map
+/nand_spl/u-boot.lds
