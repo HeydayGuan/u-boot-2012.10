@@ -34,8 +34,8 @@
 #ifndef __S3C64XX_H__
 #define __S3C64XX_H__
 
-#if defined(CONFIG_SYNC_MODE) && defined(CONFIG_S3C6400)
-#error CONFIG_SYNC_MODE unavailable on S3C6400, please, fix your configuration!
+#if defined(CONFIG_SYNC_MODE) && defined(CONFIG_S3C6410)
+#error CONFIG_SYNC_MODE unavailable on S3C6410, please, fix your configuration!
 #endif
 
 #include <asm/types.h>

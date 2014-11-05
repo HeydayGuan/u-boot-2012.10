@@ -1,6 +1,13 @@
 /*
- * Copyright (c) 2009 Samsung Electronics.
- * Minkyu Kang <mk7.kang@samsung.com>
+ * (C) Copyright 2002
+ * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+ * Marius Groeger <mgroeger@sysgo.de>
+ *
+ * (C) Copyright 2002
+ * David Mueller, ELSOFT AG, <d.mueller@elsoft.ch>
+ *
+ * (C) Copyright 2008
+ * Guennadi Liakhovetki, DENX Software Engineering, <lg@denx.de>
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -12,7 +19,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -21,14 +28,10 @@
  * MA 02111-1307 USA
  */
 
-#include <asm/arch/s3c6410.h>
+#include <common.h>
 
-.globl reset_cpu
-reset_cpu:
-	ldr	r1, =ELFIN_CLOCK_POWER_BASE
-	ldr	r2, [r1, #SYS_ID_OFFSET]
-	ldr	r3, =0xffff
-	and	r2, r3, r2, lsr #12
-	str	r2, [r1, #SW_RST_OFFSET]
-_loop_forever:
-	b	_loop_forever
+void board_init_f(unsigned long bootflag)
+{
+	relocate_code(CONFIG_SYS_TEXT_BASE - TOTAL_MALLOC_LEN, NULL,
+			CONFIG_SYS_TEXT_BASE);
+}

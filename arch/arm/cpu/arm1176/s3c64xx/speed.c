@@ -31,7 +31,7 @@
  */
 
 #include <common.h>
-#include <asm/arch/s3c6400.h>
+#include <asm/arch/s3c6410.h>
 
 #define APLL 0
 #define MPLL 1
@@ -98,8 +98,8 @@ ulong get_HCLK(void)
 	uint hclk_div = ((CLK_DIV0_REG >> 8) & 0x1) + 1;
 
 	/*
-	 * Bit 7 exists on s3c6410, and not on s3c6400, it is reserved on
-	 * s3c6400 and is always 0, and it is indeed running in ASYNC mode
+	 * Bit 7 exists on s3c6410, and not on s3c6410, it is reserved on
+	 * s3c6410 and is always 0, and it is indeed running in ASYNC mode
 	 */
 	if (OTHERS_REG & 0x80)
 		fclk = get_FCLK();		/* SYNC Mode	*/
@@ -132,7 +132,7 @@ ulong get_UCLK(void)
 
 int print_cpuinfo(void)
 {
-	printf("\nCPU:     S3C6400@%luMHz\n", get_ARMCLK() / 1000000);
+	printf("\nCPU:     S3C6410@%luMHz\n", get_ARMCLK() / 1000000);
 	printf("         Fclk = %luMHz, Hclk = %luMHz, Pclk = %luMHz ",
 	       get_FCLK() / 1000000, get_HCLK() / 1000000,
 	       get_PCLK() / 1000000);

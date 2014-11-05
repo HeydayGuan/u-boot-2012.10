@@ -1,5 +1,5 @@
 /*
- * Originates from Samsung's u-boot 1.1.6 port to S3C6400 / SMDK6400
+ * Originates from Samsung's u-boot 1.1.6 port to S3C6410 / SMDK6410
  *
  * (C) Copyright 2008
  * Guennadi Liakhovetki, DENX Software Engineering, <lg@denx.de>
