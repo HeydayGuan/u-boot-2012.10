@@ -43,7 +43,8 @@
 #include <asm/arch/s3c6410.h>
 #include <div64.h>
 
-static ulong timer_load_val;
+/* ~~~~ modify by guanc, shield the "rasie: Signal # 8 caught" error message. ~~~~ */
+DECLARE_GLOBAL_DATA_PTR;
 
 #define PRESCALER	167
 
@@ -52,19 +53,12 @@ static s3c64xx_timers *s3c64xx_get_base_timers(void)
 	return (s3c64xx_timers *)ELFIN_TIMER_BASE;
 }
 
-/* macro to read the 16 bit timer */
 static inline ulong read_timer(void)
 {
 	s3c64xx_timers *const timers = s3c64xx_get_base_timers();
 
 	return timers->TCNTO4;
 }
-
-/* Internal tick units */
-/* Last decremneter snapshot */
-static unsigned long lastdec;
-/* Monotonic incrementing timer */
-static unsigned long long timestamp;
 
 int timer_init(void)
 {
@@ -83,20 +77,18 @@ int timer_init(void)
 	 * the prescaler automatically for other PCLK frequencies.
 	 */
 	timers->TCFG0 = PRESCALER << 8;
-	if (timer_load_val == 0) {
-		timer_load_val = get_PCLK() / PRESCALER * (100 / 4); /* 100s */
-		timers->TCFG1 = (timers->TCFG1 & ~0xf0000) | 0x20000;
-	}
+	gd->timer_rate_hz = get_PCLK() / PRESCALER * (100 / 4); /* 100s */
+	timers->TCFG1 = (timers->TCFG1 & ~0xf0000) | 0x20000;
 
 	/* load value for 10 ms timeout */
-	lastdec = timers->TCNTB4 = timer_load_val;
+	gd->lastinc = timers->TCNTB4 = gd->timer_rate_hz;
 	/* auto load, manual update of Timer 4 */
 	timers->TCON = (timers->TCON & ~0x00700000) | TCON_4_AUTO |
 		TCON_4_UPDATE;
 
 	/* auto load, start Timer 4 */
 	timers->TCON = (timers->TCON & ~0x00700000) | TCON_4_AUTO | COUNT_4_ON;
-	timestamp = 0;
+	gd->timer_reset_value = 0;
 
 	return 0;
 }
@@ -113,16 +105,16 @@ unsigned long long get_ticks(void)
 {
 	ulong now = read_timer();
 
-	if (lastdec >= now) {
+	if (gd->lastinc >= now) {
 		/* normal mode */
-		timestamp += lastdec - now;
+		gd->timer_reset_value += gd->lastinc - now;
 	} else {
 		/* we have an overflow ... */
-		timestamp += lastdec + timer_load_val - now;
+		gd->timer_reset_value += gd->lastinc + gd->timer_rate_hz - now;
 	}
-	lastdec = now;
+	gd->lastinc = now;
 
-	return timestamp;
+	return gd->timer_reset_value;
 }
 
 /*
@@ -132,13 +124,25 @@ unsigned long long get_ticks(void)
 ulong get_tbclk(void)
 {
 	/* We overrun in 100s */
-	return (ulong)(timer_load_val / 100);
+	return (ulong)(gd->timer_rate_hz / 100);
+}
+
+void reset_timer_masked(void)
+{
+	/* reset time */
+	gd->lastinc = read_timer();
+	gd->timer_reset_value = 0;
+}
+
+void reset_timer(void)
+{
+	reset_timer_masked();
 }
 
 ulong get_timer_masked(void)
 {
 	unsigned long long res = get_ticks();
-	do_div (res, (timer_load_val / (100 * CONFIG_SYS_HZ)));
+	do_div(res, (gd->timer_rate_hz / (100 * CONFIG_SYS_HZ)));
 	return res;
 }
 
@@ -147,13 +151,18 @@ ulong get_timer(ulong base)
 	return get_timer_masked() - base;
 }
 
+void set_timer(ulong t)
+{
+	gd->timer_reset_value = t * (gd->timer_rate_hz / (100 * CONFIG_SYS_HZ));
+}
+
 void __udelay(unsigned long usec)
 {
 	unsigned long long tmp;
 	ulong tmo;
 
 	tmo = (usec + 9) / 10;
-	tmp = get_ticks() + tmo;	/* get current timestamp */
+	tmp = get_ticks() + tmo;	/* get current timer_reset_value */
 
 	while (get_ticks() < tmp)/* loop till event */
 		 /*NOP*/;

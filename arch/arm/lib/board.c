@@ -537,8 +537,11 @@ void board_init_r(gd_t *id, ulong dest_addr)
 		print_size(flash_size, "\n");
 # endif /* CONFIG_SYS_FLASH_CHECKSUM */
 	} else {
+#if 0
 		puts(failed);
 		hang();
+#endif
+		puts("No flash!!!\n");	/* ~~~~ add by guanc ~~~~ */
 	}
 #endif
 

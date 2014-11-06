@@ -237,11 +237,11 @@
 #define CONFIG_SYS_NAND_U_BOOT_SIZE	(252 * 1024)	/* Size of RAM U-Boot image   */
 
 /* NAND chip page size		*/
-#define CONFIG_SYS_NAND_PAGE_SIZE	4096	/* ~~~~ modify by guanc ~~~~ */
+#define CONFIG_SYS_NAND_PAGE_SIZE	4096	/*4K+218bytes ~~~~ modify by guanc ~~~~ */
 /* NAND chip block size		*/
-#define CONFIG_SYS_NAND_BLOCK_SIZE	(512 * 1024) /* ~~~~ modify by guanc ~~~~ */
+#define CONFIG_SYS_NAND_BLOCK_SIZE	(512 * 1024) /* 128pages per block ~~~~ modify by guanc ~~~~ */
 /* NAND chip page per block count  */
-#define CONFIG_SYS_NAND_PAGE_COUNT	128		/* ~~~~ modify by guanc ~~~~ */
+#define CONFIG_SYS_NAND_PAGE_COUNT	128		/* 128pages per block ~~~~ modify by guanc ~~~~ */
 /* Location of the bad-block label */
 #define CONFIG_SYS_NAND_BAD_BLOCK_POS	0
 /* Extra address cycle for > 128MiB */

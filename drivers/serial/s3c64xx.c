@@ -77,10 +77,10 @@ void serial_setbrg(void)
 
 	i = (pclk / baudrate) % 16;
 
-	//uart->UBRDIV = pclk / baudrate / 16 - 1;
-	//uart->UDIVSLOT = udivslot[i];
-	uart->UBRDIV = 0x22;	/* ~~~~ modify by guanc ~~~~ */
-	uart->UDIVSLOT = 0x1FFF;	/* ~~~~ modify by guanc ~~~~ */
+	uart->UBRDIV = pclk / baudrate / 16 - 1;
+	uart->UDIVSLOT = udivslot[i];
+	//uart->UBRDIV = 0x22;	/* ~~~~ modify by guanc ~~~~ */
+	//uart->UDIVSLOT = 0x1FFF;	/* ~~~~ modify by guanc ~~~~ */
 
 	for (i = 0; i < 100; i++)
 		barrier();
@@ -100,7 +100,7 @@ int serial_init(void)
 	/* 8N1 */
 	uart->ULCON = 3;
 	/* No interrupts, no DMA, pure polling */
-	uart->UCON = 0xe45;		/* ~~~~ modify by guanc ~~~~ */
+	uart->UCON = 0x845;		/* ~~~~ modify by guanc ~~~~ */
 
 	serial_setbrg();
 
