@@ -23,7 +23,7 @@
 
 #include <common.h>
 
-#include <asm/arch/s3c6400.h>
+#include <asm/arch/s3c6410.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -43,7 +43,7 @@ DECLARE_GLOBAL_DATA_PTR;
 #define barrier() asm volatile("" ::: "memory")
 
 /*
- * The coefficient, used to calculate the baudrate on S3C6400 UARTs is
+ * The coefficient, used to calculate the baudrate on S3C6410 UARTs is
  * calculated as
  * C = UBRDIV * 16 + number_of_set_bits_in_UDIVSLOT
  * however, section 31.6.11 of the datasheet doesn't recomment using 1 for 1,
