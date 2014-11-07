@@ -541,7 +541,7 @@ void board_init_r(gd_t *id, ulong dest_addr)
 		puts(failed);
 		hang();
 #endif
-		puts("No flash!!!\n");	/* ~~~~ add by guanc ~~~~ */
+		puts("The board has no nor flash!\n");	/* ~~~~ add by guanc ~~~~ */
 	}
 #endif
 

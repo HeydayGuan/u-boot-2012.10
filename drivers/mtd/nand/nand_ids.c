@@ -112,7 +112,12 @@ const struct nand_flash_dev nand_flash_ids[] = {
 
 	/* 16 Gigabit */
 	{"NAND 2GiB 1,8V 8-bit",	0xA5, 0, 2048, 0, LP_OPTIONS},
-	{"NAND 2GiB 3,3V 8-bit",	0xD5, 0, 2048, 0, LP_OPTIONS},
+	/* ~~~~ modify by guanc ~~~~ */
+	//{"NAND 2GiB 3,3V 8-bit",	0xD5, 0, 2048, 0, LP_OPTIONS},
+	/*
+	 * K9GAG08U0D: 2GB, dev id(0xD5), pagesize(4K), erasesize(512K)
+	 * */
+	{"NAND 2GiB 3,3V 8-bit",	0xD5, 4096, 2048, 0x80000, LP_OPTIONS},
 	{"NAND 2GiB 1,8V 16-bit",	0xB5, 0, 2048, 0, LP_OPTIONS16},
 	{"NAND 2GiB 3,3V 16-bit",	0xC5, 0, 2048, 0, LP_OPTIONS16},
 

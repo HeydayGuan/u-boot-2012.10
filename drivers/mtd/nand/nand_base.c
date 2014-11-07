@@ -2848,7 +2848,13 @@ ident_done:
 		chip->cmdfunc = nand_command_lp;
 
 	/* TODO onfi flash name */
+#if 0
 	MTDDEBUG (MTD_DEBUG_LEVEL0, "NAND device: Manufacturer ID:"
+		" 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id, *dev_id,
+		nand_manuf_ids[maf_idx].name,
+#endif
+	/* Display the nand manufaceturer info. ~~~~ modify by guanc ~~~~ */
+	printk (KERN_INFO "NAND device: Manufacturer ID:"
 		" 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id, *dev_id,
 		nand_manuf_ids[maf_idx].name,
 #ifdef CONFIG_SYS_NAND_ONFI_DETECTION

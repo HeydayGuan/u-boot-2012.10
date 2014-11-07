@@ -109,7 +109,10 @@ void nand_init(void)
 		nand_init_chip(i);
 #endif
 
-	printf("%lu MiB\n", total_nand_size / 1024);
+	/* ~~~~ modify by guanc ~~~~ */
+	printf("       %lu %s\n",
+			((total_nand_size%1024)==0) ? total_nand_size/1024/1024 : total_nand_size/1024, 
+			((total_nand_size%1024)==0) ? "GiB" : "MiB");
 
 #ifdef CONFIG_SYS_NAND_SELECT_DEVICE
 	/*

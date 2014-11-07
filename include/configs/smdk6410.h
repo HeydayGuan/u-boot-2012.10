@@ -116,6 +116,14 @@
 #define CONFIG_CMD_EXT2
 
 #define CONFIG_BOOTDELAY	3
+/* ~~~~ add by guanc ~~~~ */
+/* define the default u-boot enviroment varges*/
+#define CONFIG_ETHADDR      00:40:5c:26:0a:5b
+#define CONFIG_NETMASK      255.255.255.0
+#define CONFIG_IPADDR       192.168.1.111
+#define CONFIG_SERVERIP     192.168.1.110
+#define CONFIG_GATEWAYIP    192.168.1.1
+
 
 #define CONFIG_ZERO_BOOTDELAY_CHECK
 
@@ -207,11 +215,11 @@
 
 #ifdef CONFIG_ENABLE_MMU
 #define CONFIG_SYS_MAPPED_RAM_BASE	0xc0000000
-#define CONFIG_BOOTCOMMAND	"nand read 0xc0018000 0x60000 0x1c0000;" \
+#define CONFIG_BOOTCOMMAND	"nand read 0xc0018000 0x200000 0x500000;" \
 				"bootm 0xc0018000"
 #else
 #define CONFIG_SYS_MAPPED_RAM_BASE	CONFIG_SYS_SDRAM_BASE
-#define CONFIG_BOOTCOMMAND	"nand read 0x50018000 0x60000 0x1c0000;" \
+#define CONFIG_BOOTCOMMAND	"nand read 0x50018000 0x200000 0x500000;" \
 				"bootm 0x50018000"
 #endif
 
@@ -276,7 +284,7 @@
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
-#define CONFIG_BOOTARGS		"console=ttySAC,115200"
+#define CONFIG_BOOTARGS		"root=/dev/mtdblock2 rootfstype=yaffs2 init=/linuxrc console=ttySAC0,115200"
 
 #if !defined(CONFIG_ENABLE_MMU)
 #define CONFIG_CMD_USB			1
