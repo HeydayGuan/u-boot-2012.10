@@ -65,7 +65,7 @@
 /*
  * Architecture magic and machine type
  */
-#define CONFIG_MACH_TYPE		1270
+#define CONFIG_MACH_TYPE		1626
 
 #define CONFIG_DISPLAY_CPUINFO
 #define CONFIG_DISPLAY_BOARDINFO
@@ -78,9 +78,14 @@
 /*
  * Hardware drivers
  */
-#define CONFIG_CS8900			/* we have a CS8900 on-board	*/
-#define CONFIG_CS8900_BASE	  	0x18800300
-#define CONFIG_CS8900_BUS16		/* follow the Linux driver	*/
+//#define CONFIG_CS8900			/* we have a CS8900 on-board	*/
+//#define CONFIG_CS8900_BASE	  	0x18800300
+//#define CONFIG_CS8900_BUS16		/* follow the Linux driver	*/
+#define CONFIG_DRIVER_DM9000			/* we have a DM9000 on-board	*/
+#define CONFIG_DM9000_BASE	  	0x18000300
+#define DM9000_IO CONFIG_DM9000_BASE
+#define DM9000_DATA (CONFIG_DM9000_BASE + 0x4)
+#define CONFIG_DM9000_BUS16		/* follow the Linux driver	*/
 
 /*
  * select serial console configuration
