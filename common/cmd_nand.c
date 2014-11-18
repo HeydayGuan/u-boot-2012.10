@@ -606,10 +606,10 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 	}
 
 	if (strncmp(cmd, "read", 4) == 0 || strncmp(cmd, "write", 5) == 0) {
-		size_t rwsize;
+		size_t rwsize =0;
 		ulong pagecount = 1;
-		int read;
-		int raw;
+		int read = 0;
+		int raw = 0;
 
 		if (argc < 4)
 			goto usage;
@@ -690,7 +690,18 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 				ret = nand->write_oob(nand, off, &ops);
 		} else if (raw) {
 			ret = raw_access(nand, addr, off, pagecount, read);
-		} else {
+		} else if (!strcmp(s, ".uboot") && !read) {		/* ~~~~ add by guanc ~~~~ */
+			rwsize = CONFIG_SYS_NAND_PAGE_SIZE;		//page_size=4096;8192
+			for(i = 0; i < 4; i++) {
+				ret = nand_write_skip_bad(nand, off, &rwsize, (u_char *)addr,0);
+				off += CONFIG_SYS_NAND_PAGE_SIZE;
+				addr += 0x800; //2k
+			}
+			rwsize = size;
+			size -= CONFIG_SYS_NAND_PAGE_SIZE*4;
+			ret = nand_write_skip_bad(nand, off, &size, (u_char *)addr,0);
+		}
+		else {
 			printf("Unknown nand command suffix '%s'.\n", s);
 			return 1;
 		}
@@ -804,6 +815,7 @@ U_BOOT_CMD(
 	"    write 'size' bytes starting at offset 'off' with yaffs format\n"
 	"    from memory address 'addr', skipping bad blocks.\n"
 #endif
+	"nand write.uboot - addr off|partition size\n"
 	"nand erase[.spread] [clean] off size - erase 'size' bytes "
 	"from offset 'off'\n"
 	"    With '.spread', erase enough for given file size, otherwise,\n"

@@ -141,7 +141,7 @@
  * Miscellaneous configurable options
  */
 #define CONFIG_SYS_LONGHELP				/* undef to save memory	      */
-#define CONFIG_SYS_PROMPT		"SMDK6410 # "	/* Monitor Command Prompt     */
+#define CONFIG_SYS_PROMPT		"GuanC@OK6410 # "	/* Monitor Command Prompt     */
 #define CONFIG_SYS_CBSIZE		256		/* Console I/O Buffer Size    */
 #define CONFIG_SYS_PBSIZE		384		/* Print Buffer Size          */
 #define CONFIG_SYS_MAXARGS		16		/* max number of command args */
@@ -246,8 +246,18 @@
 #define CONFIG_SYS_NAND_U_BOOT_DST	CONFIG_SYS_PHY_UBOOT_BASE	/* NUB load-addr      */
 #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_NAND_U_BOOT_DST	/* NUB start-addr     */
 
-#define CONFIG_SYS_NAND_U_BOOT_OFFS	(4 * 1024)	/* Offset to RAM U-Boot image */
-#define CONFIG_SYS_NAND_U_BOOT_SIZE	(252 * 1024)	/* Size of RAM U-Boot image   */
+#define CONFIG_SYS_NAND_U_BOOT_OFFS	(16 * 1024)	/* Offset to RAM U-Boot image */
+/* ~~~~ Explain by guanc ~~~~ */
+/*
+ *系统从Nand启动时，首先将前8K拷贝到steppingstone中，
+ *steppingstone主要初始化CPU,关看门狗，初始化时钟及内存。
+ *之后将后面的uboot镜像全部拷贝到内存中，跳到内存处的uboot开始执行。
+ *这里CONFIG_SYS_NAND_U_BOOT_OFFS(16K)即为，u-boot.bin相对于u-boot-spl-16K.bin在u-boot-nand.bin
+ *中的偏移位置，因Nand Flash Memory最大只支持2KPage拷贝，因此前8K的内容在Nand的存储将只能存储在每个Page(4K)
+ *的前2K中，因此共需要占用16K的Nand空间。而８K之后u-boot.bin的拷贝将从16K的位置开始。
+ *
+ * */
+#define CONFIG_SYS_NAND_U_BOOT_SIZE	(496 * 1024)	/* Size of RAM U-Boot image   */
 
 /* NAND chip page size		*/
 #define CONFIG_SYS_NAND_PAGE_SIZE	4096	/*4K+218bytes ~~~~ modify by guanc ~~~~ */

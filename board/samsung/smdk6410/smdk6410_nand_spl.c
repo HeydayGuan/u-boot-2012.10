@@ -32,6 +32,12 @@
 
 void board_init_f(unsigned long bootflag)
 {
-	relocate_code(CONFIG_SYS_TEXT_BASE - TOTAL_MALLOC_LEN, NULL,
+	/* ~~~~ modify by guanc ~~~~ */
+	/* Explain:
+	 * When ok6410 start from nand, the CONFIG_NAND_SPL is defined,
+	 * so the CONFIG_SYS_TEXT_BASE is zero, the addr_sp is NULL.
+	 * so modify the addr_sp is 8*1024.
+	 * */
+	relocate_code(8*1024, NULL,
 			CONFIG_SYS_TEXT_BASE);
 }
