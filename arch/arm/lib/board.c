@@ -216,6 +216,19 @@ typedef int (init_fnc_t) (void);
 
 int print_cpuinfo(void);
 
+/* led all off ~~~~ add by guanc ~~~~ */
+int  led_init(void)
+{
+	unsigned int  uConValue = readl(0x7F008000+0x820);
+	unsigned int uDatValue = 0xFF;
+
+	uConValue |= 0x1111;
+	writel(uConValue, 0x7F008000+0x820);
+	writel(uDatValue, 0x7F008000+0x824);
+
+	return 1;
+}
+
 void __dram_init_banksize(void)
 {
 	gd->bd->bi_dram[0].start = CONFIG_SYS_SDRAM_BASE;
@@ -652,6 +665,7 @@ void board_init_r(gd_t *id, ulong dest_addr)
 	}
 #endif
 
+	led_init();   /* led all off ~~~~ add by guanc ~~~~ */
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;) {
 		main_loop();

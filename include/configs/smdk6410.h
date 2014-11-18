@@ -202,7 +202,11 @@
 #define CONFIG_SYS_FLASH_ERASE_TOUT	(5 * CONFIG_SYS_HZ) /* Timeout for Flash Erase	*/
 #define CONFIG_SYS_FLASH_WRITE_TOUT	(5 * CONFIG_SYS_HZ) /* Timeout for Flash Write	*/
 
-#define CONFIG_ENV_SIZE		0x4000	/* Total Size of Environment Sector */
+/* ~~~~ modify by guanc ~~~~ */
+/* First erase the nand block when you save the environment params,
+ * and the nand erase block is 512K(0x80000)
+ */
+#define CONFIG_ENV_SIZE		0x00080000	/* Total Size of Environment Sector */
 
 /*
  * SMDK6410 board specific data
@@ -213,25 +217,25 @@
 /* base address for uboot */
 #define CONFIG_SYS_PHY_UBOOT_BASE	(CONFIG_SYS_SDRAM_BASE + 0x07e00000)
 /* total memory available to uboot */
-#define CONFIG_SYS_UBOOT_SIZE		(1024 * 1024)
+#define CONFIG_SYS_UBOOT_SIZE		(2 * 1024 * 1024)
 
 /* Put environment copies after the end of U-Boot owned RAM */
 #define CONFIG_NAND_ENV_DST	(CONFIG_SYS_UBOOT_BASE + CONFIG_SYS_UBOOT_SIZE)
 
 #ifdef CONFIG_ENABLE_MMU
 #define CONFIG_SYS_MAPPED_RAM_BASE	0xc0000000
-#define CONFIG_BOOTCOMMAND	"nand read 0xc0018000 0x200000 0x500000;" \
-				"bootm 0xc0018000"
+#define CONFIG_BOOTCOMMAND	"nand read 0xc0008000 0x200000 0x500000;" \
+				"bootm 0xc0008000"
 #else
 #define CONFIG_SYS_MAPPED_RAM_BASE	CONFIG_SYS_SDRAM_BASE
-#define CONFIG_BOOTCOMMAND	"nand read 0x50018000 0x200000 0x500000;" \
-				"bootm 0x50018000"
+#define CONFIG_BOOTCOMMAND	"nand read 0x50008000 0x200000 0x500000;" \
+				"bootm 0x50008000"
 #endif
 
 /* NAND U-Boot load and start address */
 #define CONFIG_SYS_UBOOT_BASE		(CONFIG_SYS_MAPPED_RAM_BASE + 0x07e00000)
 
-#define CONFIG_ENV_OFFSET		0x0040000
+#define CONFIG_ENV_OFFSET		0x00080000  /* The environment params offset the nand ~~~~ modify by guanc ~~~~ */
 
 /* NAND configuration */
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
@@ -246,9 +250,8 @@
 #define CONFIG_SYS_NAND_U_BOOT_DST	CONFIG_SYS_PHY_UBOOT_BASE	/* NUB load-addr      */
 #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_NAND_U_BOOT_DST	/* NUB start-addr     */
 
-#define CONFIG_SYS_NAND_U_BOOT_OFFS	(16 * 1024)	/* Offset to RAM U-Boot image */
-/* ~~~~ Explain by guanc ~~~~ */
-/*
+/* ~~~~ modify by guanc ~~~~ */
+/* ~~~~ Explain: ~~~~
  *系统从Nand启动时，首先将前8K拷贝到steppingstone中，
  *steppingstone主要初始化CPU,关看门狗，初始化时钟及内存。
  *之后将后面的uboot镜像全部拷贝到内存中，跳到内存处的uboot开始执行。
@@ -257,7 +260,13 @@
  *的前2K中，因此共需要占用16K的Nand空间。而８K之后u-boot.bin的拷贝将从16K的位置开始。
  *
  * */
-#define CONFIG_SYS_NAND_U_BOOT_SIZE	(496 * 1024)	/* Size of RAM U-Boot image   */
+#define CONFIG_SYS_NAND_U_BOOT_OFFS	(16 * 1024)	/* Offset to RAM U-Boot image */
+/* ~~~~ modify by guanc ~~~~ */
+/* ~~~~ Explain<Critical>: ~~~~ 
+ * The size is the u-boot.bin size that you want to copy from nand to ram.
+ * If the u-boot.bin is larger the size, you must modify the value future. 
+ * */
+#define CONFIG_SYS_NAND_U_BOOT_SIZE	(256 * 1024)	/* Size of RAM U-Boot image */
 
 /* NAND chip page size		*/
 #define CONFIG_SYS_NAND_PAGE_SIZE	4096	/*4K+218bytes ~~~~ modify by guanc ~~~~ */

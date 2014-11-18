@@ -95,9 +95,9 @@ lowlevel_init:
 	bl system_clock_init
 
 	/* LED test2 */
-	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x002b
-	str	r1, [r0, #GPMDAT_OFFSET]
+#	ldr	r0, =ELFIN_GPIO_BASE
+#	ldr	r1, =0x002b
+#	str	r1, [r0, #GPMDAT_OFFSET]
 #ifndef CONFIG_NAND_SPL
 	/* for UART */
 	bl uart_asm_init
@@ -117,9 +117,9 @@ lowlevel_init:
 
 	bl	mem_ctrl_asm_init
 	/* LED test3 */
-	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x002d
-	str	r1, [r0, #GPMDAT_OFFSET]
+#	ldr	r0, =ELFIN_GPIO_BASE
+#	ldr	r1, =0x002d
+#	str	r1, [r0, #GPMDAT_OFFSET]
 
 /* Wakeup support. Don't know if it's going to be used, untested. */
 	ldr	r0, =(ELFIN_CLOCK_POWER_BASE + RST_STAT_OFFSET)
@@ -128,11 +128,6 @@ lowlevel_init:
 	cmp	r1, #0x8
 	beq	wakeup_reset
 	
-	/* LED test4 */
-	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x002e
-	str	r1, [r0, #GPMDAT_OFFSET]
-
 1:
 	mov	lr, r12
 	mov	pc, lr
@@ -146,7 +141,7 @@ wakeup_reset:
 
 	/* LED test4 */
 	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x002e
+	ldr	r1, =0x0020
 	str	r1, [r0, #GPMDAT_OFFSET]
 
 	/* Load return address and jump to kernel */

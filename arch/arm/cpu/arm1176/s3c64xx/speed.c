@@ -132,6 +132,14 @@ ulong get_UCLK(void)
 
 int print_cpuinfo(void)
 {
+	printf("############################################\r\n");
+	printf("##    u-boot-2012.10                      ##\r\n");
+	printf("##    Updated for Forlinx OK6410-A Board  ##\r\n");
+	printf("##    Version (2014-11-18)                ##\r\n");
+	printf("##    OEM: Forlinx Embedded               ##\r\n");
+	printf("##    Au&Emi:Guan Chang guanchang@163.com ##\r\n");
+	printf("############################################\r\n");
+
 	printf("\nCPU:     S3C6410@%luMHz\n", get_ARMCLK() / 1000000);
 	printf("         Fclk = %luMHz, Hclk = %luMHz, Pclk = %luMHz ",
 	       get_FCLK() / 1000000, get_HCLK() / 1000000,
