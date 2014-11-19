@@ -813,6 +813,7 @@ clean:
 		\( -name 'core' -o -name '*.bak' -o -name '*~' -o -name '*.su' \
 		-o -name '*.o'	-o -name '*.a' -o -name '*.exe'	\) -print \
 		| xargs rm -f
+	@rm -f u-boot u-boot.bin u-boot-nand.bin u-boot.map u-boot.srec
 
 # Removes everything not needed for testing u-boot
 tidy:	clean

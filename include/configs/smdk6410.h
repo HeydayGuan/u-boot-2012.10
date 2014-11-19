@@ -174,11 +174,13 @@
 */
 
 /* SMDK6410 has 2 banks of DRAM, but we use only one in U-Boot */
-#define CONFIG_NR_DRAM_BANKS	2	/* 2*128MB~~~modify by guanc~~~~*/
+#define CONFIG_NR_DRAM_BANKS	1
 #define PHYS_SDRAM_1		CONFIG_SYS_SDRAM_BASE	/* SDRAM Bank #1	*/
-#define PHYS_SDRAM_1_SIZE	0x08000000	/* 128 MB in Bank #1	*/
+#define PHYS_SDRAM_1_SIZE	0x10000000	/* 2*128 MB in Bank #1	*/
+#if 0
 #define PHYS_SDRAM_2		PHYS_SDRAM_1 + PHYS_SDRAM_1_SIZE	/* SDRAM Bank #2	~~~~ add by guanc ~~~~	*/
 #define PHYS_SDRAM_2_SIZE	0x08000000	/* 128 MB in Bank #2	~~~~ add by guanc ~~~~*/
+#endif
 
 #define CONFIG_SYS_FLASH_BASE		0x10000000
 #define CONFIG_SYS_MONITOR_BASE	0x00000000

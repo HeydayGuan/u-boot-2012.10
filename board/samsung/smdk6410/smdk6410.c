@@ -81,26 +81,32 @@ void dram_init_banksize(void)
 {
 	gd->bd->bi_dram[0].start = PHYS_SDRAM_1;
 	gd->bd->bi_dram[0].size = PHYS_SDRAM_1_SIZE;
+#if 0
 	/*
-	 *FORLINX OK6410 has two bank SDRM
+	 *FORLINX OK6410 has one bank SDRM, two block SDRAM chips.
 	 * PHYS_SDRAM_1 : 0x50000000, 128M
 	 * PHYS_SDRAM_2 : 0x58000000, 128M
 	 * */
 	gd->bd->bi_dram[1].start = PHYS_SDRAM_2;
 	gd->bd->bi_dram[1].size = PHYS_SDRAM_2_SIZE;
+#endif
 }
 
 int dram_init(void)
 {
 	/*
-	 *FORLINX OK6410 has two bank SDRM
+	 *FORLINX OK6410 has one bank SDRM, two block SDRAM chips.
 	 * PHYS_SDRAM_1 : 0x50000000, 128M
 	 * PHYS_SDRAM_2 : 0x58000000, 128M
 	 * */
 	gd->ram_size = get_ram_size((long *)CONFIG_SYS_SDRAM_BASE,
+				PHYS_SDRAM_1_SIZE);
+#if 0
+	gd->ram_size = get_ram_size((long *)CONFIG_SYS_SDRAM_BASE,
 				PHYS_SDRAM_1_SIZE) + 
-				get_ram_size((long *)PHYS_SDRAM_2,
+				   get_ram_size((long *)PHYS_SDRAM_2,
 				PHYS_SDRAM_2_SIZE);
+#endif
 
 	return 0;
 }
